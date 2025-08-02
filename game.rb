@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'board'
 require_relative 'player'
 
@@ -15,15 +17,19 @@ class Game
   end
 
   def play_turn(row, column)
-    @board.make_move(row, column, @current_player.symbol)
-    @current_player = if @current_player == @player1
-                        @player2
-                      else
-                        @player1
-                      end
+    if @board.valid_move?(row, column)
+      @board.make_move(row, column, @current_player.symbol)
+      @current_player = if @current_player == @player1
+                          @player2
+                        else
+                          @player1
+                        end
+    else
+      puts 'Enter a valid move'
+    end
   end
 
   def over?
-    @board.winner? || @board.is_full?
+    @board.winner? || @board.full?
   end
 end
